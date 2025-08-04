@@ -12,7 +12,8 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://dentalpro-frontend.vercel.app"
+  "https://dentalpro-frontend.vercel.app",
+  
 ];
 
 app.use(
