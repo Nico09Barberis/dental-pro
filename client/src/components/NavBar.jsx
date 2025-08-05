@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
@@ -24,6 +24,11 @@ const Navbar = () => {
               </button>
             )}
             {/* Agregá más links según rol si querés */}
+
+            <Link to="/my-appointments" className="hover:underline">
+              Mis Turnos
+            </Link>
+
             <button
               onClick={handleLogout}
               className="bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-200"

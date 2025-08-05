@@ -1,0 +1,21 @@
+import express from "express";
+import {
+  createAppointment,
+  getMyAppointments,
+  cancelAppointment,
+} from "../controllers/appointmentController.js";
+
+import { verifyToken } from "../middleware/authMiddleware.js";
+
+const router = express.Router();
+
+// Crear un nuevo turno (paciente)
+router.post("/", verifyToken, createAppointment);
+
+// Obtener los turnos del usuario (paciente o profesional)
+router.get("/my", verifyToken, getMyAppointments);
+
+// Cancelar turno
+router.delete("/:id", verifyToken, cancelAppointment);
+
+export default router;

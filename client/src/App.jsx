@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
+import DashboardLayout from "./layouts/DashboardLayout";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Lgn";
-import DashboardLayout from "./layouts/DashboardLayout";
 import Home from "./pages/Home";
+import MyAppointments from "./pages/MyAppointments";
 
 function App() {
   return (
@@ -20,6 +21,16 @@ function App() {
             <ProtectedRoute>
               <DashboardLayout>
                 <Dashboard />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-appointments"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <MyAppointments />
               </DashboardLayout>
             </ProtectedRoute>
           }
