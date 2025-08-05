@@ -13,15 +13,27 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173",
   "https://dentalpro-frontend.vercel.app",
-  "https://dental-pro-five.vercel.app"
+  "https://dental-pro-five.vercel.app",
+  "https://dental-pro.onrender.com",
 ];
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      // Permitir peticiones sin 'origin' (como curl o Postman)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("No permitido por CORS"));
+      }
+    },
     credentials: true,
   })
 );
+
+
 
 app.use(express.json());
 
