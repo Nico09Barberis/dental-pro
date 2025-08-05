@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { registerUser } from "../services/api";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -59,6 +59,14 @@ export default function Register() {
       <button type="submit" className="btn mt-4">
         Register
       </button>
+      
+      <p className="text-sm mt-4 text-center">
+        ¿Ya tenés cuenta?{" "}
+        <Link to="/login" className="text-blue-600 hover:underline">
+          Iniciar sesión
+        </Link>
+      </p>
+
     </form>
   );
 }
