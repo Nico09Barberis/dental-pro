@@ -13,7 +13,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173",
   "https://dentalpro-frontend.vercel.app",
-  
+  "https://dental-pro-five.vercel.app"
 ];
 
 app.use(
@@ -26,7 +26,7 @@ app.use(
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("API funcionando");
+  res.send("API funcionando"); 
 });
 
 app.use('/api/users', userRoutes);
@@ -41,3 +41,4 @@ mongoose
     app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
   })
   .catch((err) => console.error("Error conectando a MongoDB:", err));
+
