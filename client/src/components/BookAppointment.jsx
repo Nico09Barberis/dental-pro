@@ -29,7 +29,16 @@ const AppointmentForm = () => {
     e.preventDefault();
     setMessage("");
 
-    const res = await createAppointment(form, token);
+    const fullDateTime = `${form.date}T${form.time}:00`;
+
+    // Por ahora, hardcodea el ID de un profesional (sacalo de tu base de datos)
+    const appointmentData = {
+      professional: "64a0d5e6c4a8ab3a5564a123", // ejemplo
+      date: fullDateTime,
+      reason: form.specialty,
+    };
+
+    const res = await createAppointment(appointmentData, token);
 
     if (res.error) {
       setMessage("❌ Error al agendar turno");

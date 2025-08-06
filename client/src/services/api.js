@@ -1,5 +1,6 @@
 const API_URL = import.meta.env.VITE_API_URL;
 console.log(API_URL);
+import axios from "axios";
 
 export const registerUser = async (data) => {
   const res = await fetch(`${API_URL}/api/auth/register`, {
@@ -32,22 +33,31 @@ export const fetchMe = async (token) => {
 };
 
 
-export const createAppointment = async (appointmentData, token) => {
-  try {
-    const res = await fetch(`${API_URL}/api/appointments`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(appointmentData),
-    });
 
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error("Error al crear turno:", err);
-    return { error: true, msg: "Error al crear el turno" };
+export const createAppointment = async (formData, token) => {
+  try {
+    const { specialty, date, time } = formData;
+
+    const appointmentDate = new Date(`${date}T${time}`);
+
+    const res = await axios.post(
+      `${API_URL}/appointments`,
+      {
+        professional: "ID_DEL_PROFESIONAL_TEMPORAL", // Reemplazar
+        date: appointmentDate,
+        reason: specialty,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return res.data;
+  } catch (error) {
+    console.error("Error creando turno", error);
+    return { error: true };
   }
 };
 

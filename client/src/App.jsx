@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Lgn";
 import Home from "./pages/Home";
+import AppointmentPage from "./pages/AppointmentPage";
 import MyAppointments from "./pages/MyAppointments";
 
 function App() {
@@ -25,6 +26,18 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/appointment"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <AppointmentPage />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/my-appointments"
           element={

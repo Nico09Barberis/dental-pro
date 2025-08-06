@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const MyAppointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -10,9 +11,12 @@ const MyAppointments = () => {
     const fetchAppointments = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(`https://dental-pro.onrender.com/api/appointments/my`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          `https://dental-pro.onrender.com/api/appointments/my`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         setAppointments(res.data);
       } catch (err) {
         console.error(err);
@@ -36,13 +40,23 @@ const MyAppointments = () => {
       <ul>
         {appointments.map((appt) => (
           <li key={appt._id} className="border p-3 mb-2 rounded">
-            <p><strong>Fecha:</strong> {new Date(appt.date).toLocaleDateString()}</p>
-            <p><strong>Hora:</strong> {appt.time}</p>
-            <p><strong>Especialidad:</strong> {appt.specialty}</p>
-            <p><strong>Profesional:</strong> {appt.professional.name}</p>
+            <p>
+              <strong>Fecha:</strong> {new Date(appt.date).toLocaleDateString()}
+            </p>
+            <p>
+              <strong>Hora:</strong> {appt.time}
+            </p>
+            <p>
+              <strong>Especialidad:</strong> {appt.specialty}
+            </p>
+            <p>
+              <strong>Profesional:</strong> {appt.professional.name}
+            </p>
           </li>
         ))}
       </ul>
+
+      
     </div>
   );
 };
