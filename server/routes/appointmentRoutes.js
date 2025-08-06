@@ -3,6 +3,7 @@ import {
   createAppointment,
   getMyAppointments,
   cancelAppointment,
+  getAvailableTimes
 } from "../controllers/appointmentController.js";
 
 import { verifyToken } from "../middleware/authMiddleware.js";
@@ -17,5 +18,8 @@ router.get("/my", verifyToken, getMyAppointments);
 
 // Cancelar turno
 router.delete("/:id", verifyToken, cancelAppointment);
+
+//ver turnos disponibles
+router.get("/available", verifyToken, getAvailableTimes);
 
 export default router;

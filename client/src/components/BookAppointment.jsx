@@ -1,6 +1,8 @@
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { createAppointment } from "../services/api";
+import { createAppointment, fetchAvailableTimes } from "../services/api";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const AppointmentForm = () => {
   const { token } = useContext(AuthContext);
@@ -15,11 +17,35 @@ const AppointmentForm = () => {
 
   const [form, setForm] = useState({
     specialty: "",
-    date: "",
+    date: null,
     time: "",
   });
 
   const [message, setMessage] = useState("");
+  const [availableTimes, setAvailableTimes] = useState([]);
+
+
+useEffect(() => {
+    const loadTimes = async () => {
+      if (form.date) {
+        const dateStr = form.date.toISOString().split("T")[0];
+        const times = await fetchAvailableTimes(dateStr, token);
+        setAvailableTimes(times);
+        console.log("Horarios disponibles:", times);
+      } else {
+        setAvailableTimes([]);
+      }
+    };
+
+    loadTimes();
+  }, [form.date, token]);
+
+
+  const isWeekday = (date) => {
+    const day = date.getDay();
+    return day !== 0 && day !== 6; // 0 = domingo, 6 = sábado
+  };
+
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -29,7 +55,13 @@ const AppointmentForm = () => {
     e.preventDefault();
     setMessage("");
 
-    const fullDateTime = `${form.date}T${form.time}:00`;
+      if (!form.date || !form.time || !form.specialty) {
+      setMessage("❌ Por favor completá todos los campos");
+      return;
+    }
+
+    const dateStr = form.date.toISOString().split("T")[0];
+    const fullDateTime = `${dateStr}T${form.time}:00`;
 
     // Por ahora, hardcodea el ID de un profesional (sacalo de tu base de datos)
     const appointmentData = {
@@ -70,23 +102,34 @@ const AppointmentForm = () => {
           ))}
         </select>
 
-        <input
-          type="date"
-          name="date"
-          value={form.date}
-          onChange={handleChange}
-          required
+        {/* Fecha con solo días hábiles */}
+        <DatePicker
+          selected={form.date}
+          onChange={(date) => setForm({ ...form, date })}
+          filterDate={isWeekday}
+          minDate={new Date()}
+          placeholderText="Seleccioná una fecha"
           className="w-full p-2 border rounded"
+          dateFormat="yyyy-MM-dd"
         />
 
-        <input
-          type="time"
-          name="time"
-          value={form.time}
-          onChange={handleChange}
-          required
-          className="w-full p-2 border rounded"
-        />
+        {/* Horarios disponibles */}
+        {availableTimes.length > 0 && (
+          <select
+            name="time"
+            value={form.time}
+            onChange={handleChange}
+            required
+            className="w-full p-2 border rounded"
+          >
+            <option value="">Seleccioná un horario</option>
+            {availableTimes.map((t, i) => (
+              <option key={i} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+        )}
 
         <button
           type="submit"

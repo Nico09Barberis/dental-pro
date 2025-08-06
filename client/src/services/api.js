@@ -61,3 +61,21 @@ export const createAppointment = async (formData, token) => {
   }
 };
 
+
+export const fetchAvailableTimes = async (date, token) => {
+  try {
+    const res = await fetch(`${API_URL}/api/appointments/available?date=${date}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error("Error al obtener horarios:", err);
+    return [];
+  }
+};
+
+

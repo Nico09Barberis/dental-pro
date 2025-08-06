@@ -65,3 +65,39 @@ export const cancelAppointment = async (req, res) => {
     res.status(500).json({ message: "Error al cancelar el turno." });
   }
 };
+
+
+// Obtener horarios disponibles para un día
+export const getAvailableTimes = async (req, res) => {
+  try {
+    const { date } = req.query;
+
+    if (!date) {
+      return res.status(400).json({ message: "Fecha requerida" });
+    }
+
+    const startOfDay = new Date(`${date}T00:00:00`);
+    const endOfDay = new Date(`${date}T23:59:59`);
+
+    const appointments = await Appointment.find({
+      date: { $gte: startOfDay, $lte: endOfDay },
+    });
+
+    const takenTimes = appointments.map((appt) =>
+      new Date(appt.date).toISOString().slice(11, 16)
+    );
+
+    const allTimes = [
+      "08:00", "09:00", "10:00", "11:00", "12:00",
+      "13:00", "14:00", "15:00", "16:00",
+    ];
+
+    const availableTimes = allTimes.filter((time) => !takenTimes.includes(time));
+
+    res.json({ availableTimes });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al obtener horarios disponibles" });
+  }
+};
+
