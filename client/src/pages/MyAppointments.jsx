@@ -11,7 +11,7 @@ const MyAppointments = () => {
     try {
       const token = localStorage.getItem("token");
       const { data } = await axios.get(
-        `${API_URL}/appointments/my-appointments`,
+        `${API_URL}/api/appointments/my`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -34,7 +34,7 @@ const MyAppointments = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.patch(
-        `${API_URL}/appointments/cancel/${id}`,
+        `${API_URL}/api/appointments/cancel/${id}`,
         {},
         {
           headers: {

@@ -17,7 +17,7 @@ router.post("/", verifyToken, createAppointment);
 router.get("/my", verifyToken, getMyAppointments);
 
 // Cancelar turno
-router.patch("/:id", verifyToken, cancelAppointment);
+router.patch("/cancel/:id", verifyToken, cancelAppointment);
 
 //ver turnos disponibles
 router.get("/available", verifyToken, getAvailableTimes);
