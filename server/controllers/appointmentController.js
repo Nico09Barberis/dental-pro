@@ -12,7 +12,17 @@ export const createAppointment = async (req, res) => {
       reason,
     });
 
+    console.log("UserID:", req.userId);
+    console.log("Body:", req.body);
+
     const saved = await newAppointment.save();
+
+    console.log("Creando turno con:", {
+      patient: req.userId,
+      professional,
+      date,
+      reason,
+    });
     res.status(201).json(saved);
   } catch (error) {
     res.status(500).json({ message: "Error al crear el turno." });

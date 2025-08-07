@@ -60,8 +60,12 @@ useEffect(() => {
       return;
     }
 
-    const dateStr = form.date.toISOString().split("T")[0];
-    const fullDateTime = `${dateStr}T${form.time}:00`;
+    const dateStr = form.date ? form.date.toISOString().split("T")[0] : null;
+    const fullDateTime = dateStr && form.time ? `${dateStr}T${form.time}:00` : null;
+
+    console.log("form.date:", form.date);
+    console.log("form.time:", form.time);
+
 
     // Por ahora, hardcodea el ID de un profesional (sacalo de tu base de datos)
     const appointmentData = {

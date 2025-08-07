@@ -34,32 +34,24 @@ export const fetchMe = async (token) => {
 
 
 
-export const createAppointment = async (formData, token) => {
+export const createAppointment = async (appointmentData, token) => {
   try {
-    const { specialty, date, time } = formData;
-
-    const appointmentDate = new Date(`${date}T${time}`);
-
     const res = await axios.post(
-      `${API_URL}/appointments`,
-      {
-        professional: "ID_DEL_PROFESIONAL_TEMPORAL", // Reemplazar
-        date: appointmentDate,
-        reason: specialty,
-      },
+      `${API_URL}/api/appointments`,
+      appointmentData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
-
     return res.data;
   } catch (error) {
     console.error("Error creando turno", error);
     return { error: true };
   }
 };
+
 
 
 export const fetchAvailableTimes = async (date, token) => {
@@ -71,7 +63,7 @@ export const fetchAvailableTimes = async (date, token) => {
     });
 
     const data = await res.json();
-    return data;
+    return data.availableTimes || []; 
   } catch (err) {
     console.error("Error al obtener horarios:", err);
     return [];
